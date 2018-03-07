@@ -411,7 +411,7 @@ public class NeutronQoSExecutor implements Runnable {
               //logger.debug("    Map qualities : " + netQualities);
 
               //logger.debug("Following QoS policies are to applied " + netQualities.toString());
-              for (NetworkIps ip : vnfci.getIps()) {
+              for (NetworkIps ip : vnfci.getFixedIps()) {
                 //logger.debug(
                 //    "Checking "
                 //        + vnfci.getHostname()
