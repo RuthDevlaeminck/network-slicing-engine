@@ -37,6 +37,7 @@ import org.jclouds.openstack.nova.v2_0.NovaApi;
 import org.jclouds.openstack.v2_0.options.PaginationOptions;
 */
 import org.openbaton.catalogue.mano.common.Ip;
+import org.openbaton.catalogue.mano.common.NetworkIps;
 import org.openbaton.catalogue.mano.descriptor.InternalVirtualLink;
 import org.openbaton.catalogue.mano.descriptor.VNFDConnectionPoint;
 import org.openbaton.catalogue.mano.descriptor.VirtualDeploymentUnit;
@@ -410,7 +411,7 @@ public class NeutronQoSExecutor implements Runnable {
               //logger.debug("    Map qualities : " + netQualities);
 
               //logger.debug("Following QoS policies are to applied " + netQualities.toString());
-              for (Ip ip : vnfci.getIps()) {
+              for (NetworkIps ip : vnfci.getIps()) {
                 //logger.debug(
                 //    "Checking "
                 //        + vnfci.getHostname()
@@ -423,7 +424,7 @@ public class NeutronQoSExecutor implements Runnable {
                   // Avoid duplicate entries
                   dup = false;
                   for (DetailedQoSReference t : res) {
-                    if (t.getIp().equals(ip.getIp())) {
+                    if (t.getIp().equals(ip.getSubnetIps().iterator().next().getIp())) {
                       dup = true;
                     }
                   }
@@ -433,7 +434,7 @@ public class NeutronQoSExecutor implements Runnable {
                     if (netQualities.get(net) != null) {
                       ref.setQuality(netQualities.get(net));
                       ref.setVim_id(vnfci.getVim_id());
-                      ref.setIp(ip.getIp());
+                      ref.setIp(ip.getSubnetIps().iterator().next().getIp());
                       ref.setVnfr_name(vnfr.getName());
                       //logger.debug("    Adding " + ref.toString());
                       res.add(ref);
